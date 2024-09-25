@@ -42,4 +42,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    static function getAdmin(){
+        return self::select('users.*')
+            ->where('user_type', '=', 1)
+            ->where('is_delete', '=', 0)
+            ->orderBy('id', 'desc')
+            ->get();
+    }
+
+    static function getSingle($id){
+        return self::find($id);
+    }
+
+    static public function getEmailSingle($email){
+        return User::where('email', $email)->first();
+    }
+
+    static public function getTokenSingle($remember_token){
+        return User::where('remember_token', $remember_token)->first();
+    }
 }
